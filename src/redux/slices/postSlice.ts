@@ -10,10 +10,11 @@ const postsSlice = createSlice({
   name: "posts",
   initialState: initialState,
   reducers: {
-    addPost: () => {
-      // Implementasi logika untuk menambahkan post
+    addPost: (state, action: PayloadAction<{ id: number; title: string; description: string }>) => {
+      // Add the new post to the state
+      state.push(action.payload);
     },
-    updatePost: (state, action: PayloadAction<any>) => {
+    updatePost: (state, action: PayloadAction<{ id: number; title: string; description: string }>) => {
       const { id, title, description } = action.payload;
       const postIndex = state.findIndex((post: any) => post.id === id);
       if (postIndex !== -1) {
@@ -21,8 +22,9 @@ const postsSlice = createSlice({
         state[postIndex].description = description;
       }
     },
-    deletePost: () => {
-      // Implementasi logika untuk menghapus post
+    deletePost: (state, action: PayloadAction<number>) => {
+      // Remove the post from the state based on id
+      return state.filter((post: any) => post.id !== action.payload);
     },
   },
 });
@@ -33,4 +35,3 @@ export const selectPostById = (state: any, postId: number) =>
   state.posts.find((post: any) => post.id === postId);
 
 export default postsSlice.reducer;
-
